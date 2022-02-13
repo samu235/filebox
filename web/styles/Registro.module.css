@@ -1,0 +1,26 @@
+.cardRegistro{
+    max-width: 50em;
+    min-width: 20em;
+    margin: 0.5em;
+    padding: 1em;
+    box-shadow: 0 0 30px 3px #008cff;
+    border: 0px
+
+
+}
+.cartResgistrofondo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+  
+}
+.cartButon{
+    margin: 0.5em;
+}
+.cartItem{
+    margin: 0.5em;
+}
+.carttitel{
+    text-align: center;
+}
