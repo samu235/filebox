@@ -24,3 +24,6 @@
 .carttitel{
     text-align: center;
 }
+.error{
+    color: red;
+}

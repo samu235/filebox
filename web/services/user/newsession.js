@@ -5,7 +5,7 @@ export default async function newsession(user, pass) {
     datasend.append('user', user);
     datasend.append('pass', pass);
     
-    const url_newuser = "http://" + process.env.NEXT_PUBLIC_API_SERVER_URL + ":" + process.env.NEXT_PUBLIC_API_SERVER_PORT + "/login"
+    const url_newuser = "http://" + process.env.NEXT_PUBLIC_API_SERVER_URL + ":" + process.env.NEXT_PUBLIC_API_SERVER_PORT + "/api/user/loginuser/"
 
     let response = await fetch(url_newuser, {
         method: 'post',
@@ -21,11 +21,7 @@ export default async function newsession(user, pass) {
 
     let data = await response.json()
 
-    console.log("datos encontrados " + data.length)
-    if (data.length > 0) {
-        
-        console.log(data)
-    }
-
+  
+    //console.log(data)
     return data
 }

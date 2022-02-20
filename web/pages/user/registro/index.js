@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from 'next/router';
 import newuser from "../../../services/user/newuser";
 
-import styles from "/styles/Registro.module.css" 
+import styles from "/styles/Registro.module.css"
 
 
 
@@ -42,37 +42,37 @@ export default function Registro() {
         })
     }
 
-    function myChange(){
+    function myChange() {
         let enableButton = true
-        let  pass1 = $( "#password" ).val()
-        let pass2 = $( "#password2" ).val()
-        let mail = $( "#email" ).val()
-        const  emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        let pass1 = $("#password").val()
+        let pass2 = $("#password2").val()
+        let mail = $("#email").val()
+        const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         console.log(pass1)
-        if(pass1 != pass2 || pass1.length <=0  ){
-            enableButton=false;
+        if (pass1 != pass2 || pass1.length <= 0) {
+            enableButton = false;
         }
-        if( mail.length <=0 || !(emailRegex.test(mail) )){
-            enableButton=false;
+        if (mail.length <= 0 || !(emailRegex.test(mail))) {
+            enableButton = false;
         }
-        
+
         console.log(enableButton)
         console.log(pass1.length)
-        $( "#buttonSend" ).prop("disabled",!enableButton);
+        $("#buttonSend").prop("disabled", !enableButton);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         myChange()
-    },[])
+    }, [])
 
     return (
         <div className={styles.cartResgistrofondo}>
-            
+
             <form onSubmit={mysend} method="POST">
-                <div className={"card "+styles.cardRegistro}>
-                <h1 className={styles.carttitel}>Login</h1>
+                <div className={"card " + styles.cardRegistro}>
+                    <h1 className={styles.carttitel}>Registro</h1>
                     <div>
-                    <label htmlFor="username">User</label>
+                        <label htmlFor="username">User</label>
                         <input type='text'
                             placeholder='username'
                             id='username'
@@ -81,7 +81,7 @@ export default function Registro() {
                     </div>
                     <br />
                     <div>
-                    <label htmlFor="email">email</label>
+                        <label htmlFor="email">email</label>
                         <input
                             type='email'
                             placeholder='email'
@@ -92,7 +92,7 @@ export default function Registro() {
                     </div>
                     <br />
                     <div>
-                    <label htmlFor="password">password</label>
+                        <label htmlFor="password">password</label>
                         <input
                             type='password'
                             placeholder='password'
@@ -103,7 +103,7 @@ export default function Registro() {
                     </div>
                     <br />
                     <div>
-                    <label htmlFor="password2"> repeat password</label>
+                        <label htmlFor="password2"> repeat password</label>
                         <input
                             type='password'
                             placeholder='password'
@@ -114,7 +114,7 @@ export default function Registro() {
                     </div>
                     <br />
 
-                    <button id="buttonSend" className={"btn btn-primary "+styles.cartButon}>Login</button>
+                    <button id="buttonSend" className={"btn btn-primary " + styles.cartButon}>Registro</button>
                 </div>
 
             </form>

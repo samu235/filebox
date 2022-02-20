@@ -5,11 +5,11 @@ const app = express();
 const multer = require('multer');
 const { request, response } = require('express');
 const bodyParser = require('body-parser');
-const {newUser} = require("./user")
+const {newUser,loginUser} = require("./user")
 
 var fs = require('fs');
 
-newUser("celia","celiapass","celia@",0)
+//newUser("celia","celiapass","celia@",0)
 
 //const { env } = require('process');
 const dotenv = require('dotenv')
@@ -43,6 +43,25 @@ app.post('/api/user/newuser/', async (request, response) => {
     else{
         response.status(400)
     }
+    
+})
+
+app.post('/api/user/loginuser/',async (request,response) => {
+    const user = request.body.user;
+    const pass = request.body.pass; 
+    try {
+        let result = await loginUser(user,pass)
+        console.log(result)
+        if(!result.error){
+            response.status(200).json(result)
+        }else{
+            response.status(400).json(result)
+        }
+    } catch (error) {
+        response.status(400)
+    } 
+    
+    
     
 })
 
