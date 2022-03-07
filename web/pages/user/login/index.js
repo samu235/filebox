@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import newsession from "../../../services/user/newsession"
 import { useRouter } from 'next/router';
+import Link from 'next/link'
 
 import styles from "/styles/Registro.module.css"
 
@@ -12,36 +13,51 @@ export default function Login() {
 
     const router = useRouter();
     var { state, setstate } = useState("")
-    const [error,setError]=useState("")
+    const [error, setError] = useState("")
 
     const mysend = function (event) {
         event.preventDefault()
         console.log("enviar formulaio  " + event.currentTarget.username.value)
         const user = event.currentTarget.username.value
         const pass = event.currentTarget.password.value
-        
+
 
         newsession(user, pass).then((data) => {
 
             console.log("datos")
             console.log(data)
+
+            function deletePermision() {
+                localStorage.removeItem("idsesion")
+                localStorage.removeItem("user")
+                //console.log("deletePermision")
+            }
             if (data && !data.error) {
                 let myuser = data
-                console.log(myuser)
-                if (myuser.iduser === undefined || myuser.iduser == null || myuser.iduser.length <= 0 || myuser.user === undefined || myuser.user == null || myuser.user.length <= 0) {
+                //console.log(myuser)
+                if (myuser.id === undefined || myuser.id == null || myuser.id.length <= 0
+                    || myuser.typeUser === undefined || myuser.typeUser == null
+                    || myuser.idSesion === undefined || myuser.idSesion == null) {
                     //console.log("ERROR user=" + data[0].user + " iduser=" + data.iduser)
+                    deletePermision()
                 }
                 else {
-                    localStorage.setItem("idsesion", myuser.iduser)
-                    localStorage.setItem("user", myuser.user)
-                    router.push("/")
-                    //console.log("route user=" + myuser.user + " iduser=" + myuser.iduser)
+                    if (myuser.typeUser == 1) {
+                        localStorage.setItem("idsesion", myuser.idSesion)
+                        localStorage.setItem("user", myuser.id)
+                        setError("")
+                    }
+                    else {
+                        deletePermision()
+                        setError("usuario sin permisos")
+                    }
                 }
-            } else if(data.error){
+            } else if (data.error) {
                 setError(data.error)
-            }else {
+                deletePermision()
+            } else {
                 console.log("no find user=" + user)
-                //setstate("no find user=" + user)
+                deletePermision()
             }
         })
     }
@@ -73,6 +89,9 @@ export default function Login() {
                             className="form-control"
                         />
                     </div>
+                    <Link  href="/user/registro">
+                        <a className={styles.enlace}>O registrate</a>
+                    </Link>
                     <br />
                     <div className={styles.error}>{error}</div>
                     <button className={"btn btn-primary " + styles.cartButon}>Login</button>

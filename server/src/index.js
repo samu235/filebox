@@ -31,6 +31,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+
+
 app.post('/api/user/newuser/', async (request, response) => {
     const user = request.body.user;
     const email = request.body.email;
@@ -41,7 +43,7 @@ app.post('/api/user/newuser/', async (request, response) => {
         response.status(200).json(result)
     }
     else{
-        response.status(400)
+        response.sendStatus(400)
     }
     
 })
@@ -58,14 +60,26 @@ app.post('/api/user/loginuser/',async (request,response) => {
             response.status(400).json(result)
         }
     } catch (error) {
-        response.status(400)
+        response.sendStatus(400)
     } 
     
     
     
 })
+app.post('/api/user/islogin/', async (request, response) => {
+    const user = request.body.user;
+    const idSesion = request.body.idSesion;
+    
+    const result = await isLogin(user,idSesion);
 
-
+    if(result != -1){
+        response.status(200).json(result)
+    }
+    else{
+        response.status(200).json({error:"no login"})
+    }
+    
+})
 
 
 

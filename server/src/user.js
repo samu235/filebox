@@ -1,5 +1,6 @@
 const sql = require('./sql')
 const {compare,newEncript} = require("./encrypt")
+const { v4: uuidv4 } = require('uuid');
 
 
 
@@ -27,20 +28,32 @@ async function  newUser(user,pass,mail,typeUser){
 async function  loginUser(user,pass){
 
     const querry="SELECT * FROM filebox.user where id = ?;"
+    const querry_update="UPDATE `filebox`.`user` SET `idSesion` = ? WHERE (`id` = ?);"
+    let uuid = uuidv4()
     //const hastPass = await newEncript(pass)
     //const resultHast = await compare(pass,hastPass)
 
     try {
-        result = await sql.query(querry, [user])
+        let result = await sql.query(querry, [user])
         console.log(result)
 
         if (result < 1){
             return {error:"no found user"}
         }
+        
         if(await compare(pass,result[0].pass)){
             console.log("existe user")
-            return {...result[0],
-                    pass:""}
+            let result2 = await sql.query(querry_update, [uuid,user])
+            console.log(result2)
+            if(result2.affectedRows==1){
+                return {...result[0],
+                    pass:"",
+                    idSesion:uuid}
+            }else{
+                return {error:"error server"}
+            }
+            
+            
         }else{
             console.log("error pass")
             return {error:"error pass"}
@@ -55,4 +68,27 @@ async function  loginUser(user,pass){
     return -1
 }
 
-module.exports = {newUser,loginUser}
+async function  isLogin(user,idSesion){
+
+    const querry="SELECT id,idSesion FROM filebox.user where id=? and idSesion=?;"
+    const querry_update = "UPDATE `filebox`.`user` SET `lastSesion` = '2022-02-06 13:52:27' WHERE (`id` = ?);"
+
+
+    try {
+        result = await sql.query(querry, [user,idSesion])
+        console.log(result)
+        if(result[0]?.id === user)
+        {
+           return result; 
+        }else{
+            return -1
+        }
+        
+    } catch (error) {
+        console.log("ERROR -- function isLogin -- "+error)
+        return -1
+    }
+    return -1
+}
+
+module.exports = {newUser,loginUser,isLogin}
