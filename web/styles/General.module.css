@@ -1,0 +1,19 @@
+.botom{
+    background-color: orange;
+    border-radius: 5px 20px 5px;
+    border-color: orange;
+    color:white;
+    margin: 0.1rem
+}
+
+.header {
+    
+    width: 100%;
+    background-color: #333;
+    font-size: 20px;
+    color: #ffffff;
+    padding: 15px 20px;
+}
+.right{
+    float: right;
+}

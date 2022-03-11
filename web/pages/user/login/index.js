@@ -4,7 +4,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link'
 
 import styles from "/styles/Registro.module.css"
-
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../../reducers/userReducer";
 
 
 
@@ -14,12 +15,15 @@ export default function Login() {
     const router = useRouter();
     var { state, setstate } = useState("")
     const [error, setError] = useState("")
+    const stateUser = useSelector(state => state.user)
+    const dispatch = useDispatch()
 
     const mysend = function (event) {
         event.preventDefault()
         console.log("enviar formulaio  " + event.currentTarget.username.value)
         const user = event.currentTarget.username.value
         const pass = event.currentTarget.password.value
+        
 
 
         newsession(user, pass).then((data) => {
@@ -30,7 +34,7 @@ export default function Login() {
             function deletePermision() {
                 localStorage.removeItem("idsesion")
                 localStorage.removeItem("user")
-                //console.log("deletePermision")
+                
             }
             if (data && !data.error) {
                 let myuser = data
@@ -45,6 +49,7 @@ export default function Login() {
                     if (myuser.typeUser == 1) {
                         localStorage.setItem("idsesion", myuser.idSesion)
                         localStorage.setItem("user", myuser.id)
+                        dispatch(loginUser(myuser.id,myuser.idSesion))
                         setError("")
                     }
                     else {

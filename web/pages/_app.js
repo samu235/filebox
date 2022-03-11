@@ -1,14 +1,14 @@
 import '../styles/globals.css'
 import { Provider } from 'react-redux'
 import { createStore, combineReducers } from 'redux'
-import storeReducer from '../reducers/userReducer'
 import { userReducer } from '../reducers/userReducer'
 import { languageReducer } from '../reducers/languageReducer'
 import Head from 'next/head'
 
 const reducer = combineReducers({
   user: userReducer,
-  languege: languageReducer
+  languege: languageReducer,
+   
 })
 
 const store = createStore(reducer)
