@@ -85,7 +85,7 @@ export default function Home() {
       {(nowRoute.length > 1) ? <ItemRow description={"anterior"} myonClick={onClickReturn} returnIco="true"></ItemRow> : ""}
 
       {mytree?.map(data => {
-        const myFuntionOnClick = (data.indexOf(".") > -1) ? () => onClickFile(nowRoute + "/" + data) : () => onClickFolder(nowRoute + "/" + data)
+        const myFuntionOnClick = (data.indexOf(".") > -1) ? () => onClickFile(nowRoute[nowRoute.length - 1] + "/" + data) : () => onClickFolder(nowRoute[nowRoute.length - 1] + "/" + data)
         return (
           <ItemRow description={data} key={data} myonClick={myFuntionOnClick}></ItemRow>
         )
