@@ -177,26 +177,10 @@ app.post("/api/file/download/",(request, response) => {
     const user = request.body.user;
     const idSesion = request.body.idSesion;
     const path = request.body.path;
-
-   
     console.log("/api/file/download/")
-    //console.log(request)
     console.log(user+" -- "+idSesion+" -- "+path)
-
-    
-
     response.download(urlMemory+"/"+user+path)
-    
- 
-    console.log(result)
-    //response.status(200).json({ tree: result })
-
 })
-
-
-
-
-
 
 
 app.listen(PORT);

@@ -1,9 +1,10 @@
 
+import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
 import { useDispatch } from 'react-redux'
 import styles from '../styles/General.module.css'
 import ModalUploadFile from './ModalUploadFileMultiple'
 
-export default function OptionBar() {
+export default function OptionBar(props) {
     const dispatch = useDispatch()
     const uploadFile = () => {
 
@@ -31,6 +32,7 @@ export default function OptionBar() {
                 botonStyle={styles.botom + " " + styles.right}
                 titelStyle={styles.blacktext}
                 bodyStyle={styles.blacktext}
+                funtionReload={props.funtionReload}
             />
 
 

@@ -22,6 +22,7 @@ export default function ModalUploadFile(props) {
         uploadMultipleService(fromdata,stateUser.idSesion).then(data => {
             console.log("enviado -- ")
             setmysendok("Enviado")
+            props.funtionReload()
 
         }).catch((e) => {
             console.log("error enviando -- " + e)
