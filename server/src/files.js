@@ -11,7 +11,8 @@ var walk    = require('walk');
         });
     });
     return result
-    
+
+
    /*
    var files   = [];
     var walker  =await  walk.walk(dir, { followLinks: false });

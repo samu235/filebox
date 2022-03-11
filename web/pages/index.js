@@ -8,6 +8,7 @@ import getTreeService from '../services/files/getTreeService'
 import { loginUser } from '../reducers/userReducer'
 import ItemRow from '../componets/ItemRow'
 import FolderRow from '../componets/FolderRow'
+import dowloadFileService from '../services/files/dowloadFileService'
 
 export default function Home() {
   const stateLanguage = useSelector(state => state.languege)
@@ -55,6 +56,14 @@ export default function Home() {
   function onClickFile(data) {
     console.log("item")
     console.log(data)
+    dowloadFileService(stateUser.user, stateUser.idSesion, data).then(data => {
+      console.log("respeusta")
+      console.log(data)
+      //data
+      //var disposition = data
+      //console.log(disposition);
+      
+    })
   }
   function onClickReturn(data) {
     if (nowRoute.length > 1) {
