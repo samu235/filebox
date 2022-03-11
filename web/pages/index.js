@@ -16,9 +16,8 @@ export default function Home() {
       <Head>
         <title>filebox</title>
         <meta name="description" content="filebox save your file on cloud" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico"/>
       </Head>
-      <NavBar/>
       <OptionBar/>
       
       <div>filebox222</div>
@@ -26,4 +25,5 @@ export default function Home() {
       <div>{stateUser.user}</div>
     </div>
   )
+
 }

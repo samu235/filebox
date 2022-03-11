@@ -1,5 +1,6 @@
 
 import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import uploadMultipleService from '../services/files/uploadMultipleService'
 import styles from './../styles/General.module.css'
 
@@ -9,20 +10,18 @@ export default function ModalUploadFile(props) {
     const form = useRef(null)
     const [mysendok, setmysendok] = useState("")
     const [mysenderror, setmysenderror] = useState("")
-    const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
-    const [suplier, setSuplier] = useState("")
+
+    const stateUser = useSelector(state => state.user)
 
     const mysend = (event) => {
         event.preventDefault()
         $("#btnSendImg").prop("disabled", true)
         const fromdata = new FormData(form.current)
-        fromdata.append("date", date);
-        fromdata.append("suplier", suplier);
-        console.log(suplier)
-        uploadMultipleService(fromdata).then(data => {
+        fromdata.append("user", stateUser.user);
+        fromdata.append("idSesion", stateUser.idSesion);
+        uploadMultipleService(fromdata,stateUser.idSesion).then(data => {
             console.log("enviado -- ")
             setmysendok("Enviado")
-
 
         }).catch((e) => {
             console.log("error enviando -- " + e)
@@ -47,12 +46,12 @@ export default function ModalUploadFile(props) {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Subir Factura</h5>
+                            <h5 className={"modal-title " +props?.titelStyle} id="exampleModalLabel">Subir Archivo</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div className="modal-body">
+                        <div className={"modal-body "+props?.bodyStyle}>
                             <div>
                                 <form ref={form} onSubmit={mysend} encType="multipart/form-data">
                                     <input type="file" name="filedata" id="filedata" onChange={newFileSelect} multiple></input>

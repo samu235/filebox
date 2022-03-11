@@ -1,5 +1,5 @@
-export default async function UploadMultipleService(data) {
-    const url_UploadMultipleServices = "http://" + process.env.NEXT_PUBLIC_API_SERVER_URL + ":" + process.env.NEXT_PUBLIC_API_SERVER_PORT + "/uploadmultiple"
+export default async function UploadMultipleService(data,idSesion) {
+    const url_UploadMultipleServices = "http://" + process.env.NEXT_PUBLIC_API_SERVER_URL + ":" + process.env.NEXT_PUBLIC_API_SERVER_PORT + "/api/file/uploadmultiple"
    
     let response ={}
 
@@ -8,7 +8,10 @@ export default async function UploadMultipleService(data) {
         console.log(data)
          response = await fetch(url_UploadMultipleServices,  {
             method: 'POST',
-            body:data
+            body:data,
+            headers: {
+                'idSesion': idSesion,
+              },
             
           
         })

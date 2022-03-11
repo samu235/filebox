@@ -2,7 +2,9 @@
 export const userReducer =(state = user, action )=>{
     if(action.type ==='@user/setUser'){
         state = {...state,
-            user:action.payload.user}
+            user:action.payload.user,
+            idSesion:action.payload.idSesion,
+        }
     }
     return state
 }

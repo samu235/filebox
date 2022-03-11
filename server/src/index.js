@@ -5,10 +5,12 @@ const app = express();
 const multer = require('multer');
 const { request, response } = require('express');
 const bodyParser = require('body-parser');
-const { newUser, loginUser } = require("./user")
+const { newUser, loginUser, isLogin, isIdSesion } = require("./user")
+var router = express.Router();
 
 var fs = require('fs');
-const urlFilesTemporal = "/temporalfiles/"//process.env.NEXT_PUBLIC_FOLDER_SAVE_FACTURAS
+const urlFilesTemporal = "./temporalfiles/"//process.env.NEXT_PUBLIC_FOLDER_SAVE_FACTURAS
+const urlMemory = "./../memory/"
 
 //newUser("celia","celiapass","celia@",0)
 
@@ -17,23 +19,18 @@ const dotenv = require('dotenv')
 const sharp = require('sharp');
 const PORT = 3001;
 
+app.use('/', router);
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: false
+    extended: true
 }));
 
-/*
-const resultdotenv = dotenv.config()
 
-if (resultdotenv.error) {
-    throw resultdotenv.error
-}
-*/
 const storage = multer.diskStorage({
     destination: urlFilesTemporal,
     filename: function (req, file, cb) {
-        cb("", file.originalname)
+        cb("", Date.now()+"TEMP"+file.originalname)
     }
 })
 
@@ -41,7 +38,24 @@ const upload = multer({
     storage: storage
 })
 
-app.post("/uploadfile", upload.single('filedata'), (request, response) => {
+app.use("/api/file/",async function (req, res, next) {
+    console.log('Time:', Date.now());
+   
+    const idSesion = req.headers['idsesion']
+    const result = await isIdSesion( idSesion);
+
+    if (result != -1) {
+        console.log("loger OK "+idSesion)
+        return next()
+    }
+    else {
+        res.status(500).json({ error: "no login" })
+        console.log("Error no login -- "+idSesion)
+    }
+
+  })
+
+app.post("/api/file/uploadfile", upload.single('filedata'), (request, response) => {
     const file = request.body.name
     try {
                 response.json({ "state": "OK" }).send()
@@ -52,12 +66,40 @@ app.post("/uploadfile", upload.single('filedata'), (request, response) => {
     return;
 })
 
-app.post('/uploadmultiple', upload.array('filedata'), (req, res, next) => {
+app.post('/api/file/uploadmultiple', upload.array('filedata'), (req, res, next) => {
     const files = req.files
+    const user = req.body.user
+    const idSesion = req.body.idSesion
+    console.log("/api/file/uploadmultiple")
     if (!files) {
         const error = new Error('Please choose files')
         error.httpStatusCode = 400
         return next(error)
+    }
+    if( user === undefined || user == null || user <= 0){
+        res.status(200).json({ error: "error user" })
+        return next()
+    }
+    if( idSesion === undefined || idSesion == null || idSesion <= 0){
+        res.status(200).json({ error: "error idSesion" })
+        return next()
+    }
+    try{
+        let folder = urlMemory +  user +"/"
+        if (!fs.existsSync(folder)) {
+            console.log("creando directorio: " + folder)
+            fs.mkdirSync(folder, { recursive: true });
+            need_resize=true
+        }
+        files.map(data=>{
+            console.log(data.path)
+            console.log(folder+data.originalname)
+            fs.rename(data.path,folder+data.originalname, function (err) {
+                if (err) throw err
+                console.log('Successfully renamed - AKA moved!')
+              })})
+    }catch(e){
+        console.log(e)
     }
 
     console.log(files)

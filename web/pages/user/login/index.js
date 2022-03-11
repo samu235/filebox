@@ -40,17 +40,17 @@ export default function Login() {
                 let myuser = data
                 //console.log(myuser)
                 if (myuser.id === undefined || myuser.id == null || myuser.id.length <= 0
-                    || myuser.typeUser === undefined || myuser.typeUser == null
+                    || myuser.typeuser === undefined || myuser.typeuser == null
                     || myuser.idSesion === undefined || myuser.idSesion == null) {
-                    //console.log("ERROR user=" + data[0].user + " iduser=" + data.iduser)
                     deletePermision()
                 }
                 else {
-                    if (myuser.typeUser == 1) {
+                    if (Number(myuser.typeuser) >0) {
                         localStorage.setItem("idsesion", myuser.idSesion)
                         localStorage.setItem("user", myuser.id)
                         dispatch(loginUser(myuser.id,myuser.idSesion))
                         setError("")
+                        router.push("/")
                     }
                     else {
                         deletePermision()
@@ -61,7 +61,7 @@ export default function Login() {
                 setError(data.error)
                 deletePermision()
             } else {
-                console.log("no find user=" + user)
+                setError("last error")
                 deletePermision()
             }
         })
