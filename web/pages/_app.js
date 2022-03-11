@@ -1,9 +1,10 @@
 import '../styles/globals.css'
-import { Provider } from 'react-redux'
+import { Provider, useDispatch } from 'react-redux'
 import { createStore, combineReducers } from 'redux'
 import { userReducer } from '../reducers/userReducer'
 import { languageReducer } from '../reducers/languageReducer'
 import Head from 'next/head'
+import { useEffect } from 'react'
 
 const reducer = combineReducers({
   user: userReducer,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
 const store = createStore(reducer)
 
 function MyApp({ Component, pageProps }) {
+  
   return (
 
     <>

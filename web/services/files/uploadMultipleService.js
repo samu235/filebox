@@ -16,7 +16,7 @@ export default async function UploadMultipleService(data,idSesion) {
           
         })
     } catch (error) {
-        console.log("error subiendo factura -- "+ error)
+        console.log("error UploadMultipleService -- "+ error)
     }
     return response
 }

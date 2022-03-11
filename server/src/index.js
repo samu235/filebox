@@ -17,6 +17,7 @@ const urlMemory = "./../memory/"
 //const { env } = require('process');
 const dotenv = require('dotenv')
 const sharp = require('sharp');
+const { readTree } = require('./files');
 const PORT = 3001;
 
 app.use('/', router);
@@ -156,6 +157,21 @@ app.post('/api/user/islogin/', async (request, response) => {
     }
 
 })
+app.post("/api/file/tree/",(request, response) => {
+    const user = request.body.user;
+    const idSesion = request.body.idSesion;
+    const path = request.body.path;
+
+   
+    console.log("/api/file/tree/")
+    //console.log(request)
+    console.log(user+" -- "+idSesion+" -- "+path)
+
+    let result = readTree(urlMemory+"/"+user+"/")
+    console.log(result)
+    response.status(200).json({ tree: result })
+
+})
 
 
 
@@ -166,6 +182,6 @@ app.post('/api/user/islogin/', async (request, response) => {
 app.listen(PORT);
 console.log(`el servidor esta run en el puerto ${PORT}`);
 
-
+readTree(urlMemory+"/samu/")
 
 
