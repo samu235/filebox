@@ -167,7 +167,7 @@ app.post("/api/file/tree/",(request, response) => {
     //console.log(request)
     console.log(user+" -- "+idSesion+" -- "+path)
 
-    let result = readTree(urlMemory+"/"+user+"/")
+    let result = readTree(urlMemory+"/"+user+path)
     console.log(result)
     response.status(200).json({ tree: result })
 

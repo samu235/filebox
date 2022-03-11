@@ -16,6 +16,7 @@ export default function Home() {
   const dispatch = useDispatch()
   console.log(stateLanguage)
   const [mytree, setTree] = useState([])
+  const [nowRoute, setNowRoute] = useState(["/"])
   useEffect(() => {
     console.log("Home")
     let idSesion = localStorage.getItem("idsesion");
@@ -28,13 +29,44 @@ export default function Home() {
   }, [])
   useEffect(() => {
 
-    getTreeService(stateUser.user, stateUser.idSesion, "/").then(data => {
+    getTree()
+
+  }, [stateUser])
+
+  function getTree() {
+    getTreeService(stateUser.user, stateUser.idSesion, nowRoute[nowRoute.length - 1]).then(data => {
       console.log("respeusta")
+      console.log(nowRoute)
       console.log(data.tree)
       setTree(data.tree)
     })
+  }
 
-  }, [stateUser])
+  function onClickFolder(data) {
+    console.log("folder")
+    console.log(data)
+    let newData = nowRoute
+    newData.push(data)
+    console.log(newData)
+    console.log(nowRoute[nowRoute.length - 1])
+    setNowRoute(newData)
+    getTree()
+  }
+  function onClickFile(data) {
+    console.log("item")
+    console.log(data)
+  }
+  function onClickReturn(data) {
+    if (nowRoute.length > 1) {
+      console.log("return")
+      let newData = nowRoute
+      newData.pop()
+      console.log(newData)
+      console.log(data)
+      getTree()
+    }
+
+  }
 
   return (
     <div className={styles.container}>
@@ -46,13 +78,16 @@ export default function Home() {
       <OptionBar />
 
       <div>filebox222</div>
-      <div>{stateLanguage}</div>
+      <div>{nowRoute}</div>
       <div>{stateUser.user}</div>
       <div>{stateUser.idSesion}</div>
+
+      {(nowRoute.length > 1) ? <ItemRow description={"anterior"} myonClick={onClickReturn} returnIco="true"></ItemRow> : ""}
+
       {mytree?.map(data => {
-        const mycomponent = (data.indexOf(".") > -1) ? <FolderRow description={data} key={data}></FolderRow> : <ItemRow description={data} key={data}></ItemRow>
+        const myFuntionOnClick = (data.indexOf(".") > -1) ? () => onClickFile(nowRoute + "/" + data) : () => onClickFolder(nowRoute + "/" + data)
         return (
-          mycomponent
+          <ItemRow description={data} key={data} myonClick={myFuntionOnClick}></ItemRow>
         )
       })}
     </div>

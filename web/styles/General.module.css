@@ -20,3 +20,10 @@
 .right{
     float: right;
 }
+.left{
+    float: left;
+    margin-left: 0.4rem;
+}
+.container {
+    display: flex;
+  }
