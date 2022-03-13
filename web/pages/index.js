@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 import getTreeService from '../services/files/getTreeService'
 import { loginUser } from '../reducers/userReducer'
 import ItemRow from '../componets/ItemRow'
-import FolderRow from '../componets/FolderRow'
 import dowloadFileService from '../services/files/dowloadFileService'
 
 export default function Home() {
@@ -24,9 +23,6 @@ export default function Home() {
     let user = localStorage.getItem("user");
     console.log(user)
     dispatch(loginUser(user, idSesion))
-
-
-
   }, [])
   useEffect(() => {
 

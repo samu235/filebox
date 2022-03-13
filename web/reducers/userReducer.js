@@ -24,3 +24,13 @@ export const loginUser = (user,idSesion)=>{
         },
     }
 }
+
+export const closeSessionUser = ()=>{
+    return{
+        type:"@user/setUser",
+        payload: {
+            user:"",
+            idSesion:"",
+        },
+    }
+}

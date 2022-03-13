@@ -3,6 +3,7 @@ import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
 import { useDispatch } from 'react-redux'
 import styles from '../styles/General.module.css'
 import ModalUploadFile from './ModalUploadFileMultiple'
+import ModalUser from './ModalUser'
 
 export default function OptionBar(props) {
     const dispatch = useDispatch()
@@ -14,7 +15,19 @@ export default function OptionBar(props) {
 
         <div className={styles.header}>
             filebox
-            <button className={"btn btn-primary " + styles.botom + " " + styles.right} >
+            <ModalUser
+                botonicon={
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                    </svg>
+                }
+                botondescription="User"
+                botonStyle={styles.botom + " " + styles.right}
+                titelStyle={styles.blacktext}
+                bodyStyle={styles.blacktext}
+
+            />
+            < button className={"btn btn-primary " + styles.botom + " " + styles.right} >
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-folder-plus" viewBox="0 0 16 16">
                     <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z" />

@@ -2,7 +2,6 @@
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import uploadMultipleService from '../services/files/uploadMultipleService'
-import styles from './../styles/General.module.css'
 
 
 export default function ModalUploadFile(props) {
