@@ -19,6 +19,7 @@ export default function ModalUploadFile(props) {
         const fromdata = new FormData(form.current)
         fromdata.append("user", stateUser.user);
         fromdata.append("idSesion", stateUser.idSesion);
+        fromdata.append("path", props.nowRoute);
         uploadMultipleService(fromdata,stateUser.idSesion).then(data => {
             console.log("enviado -- ")
             setmysendok("Enviado")

@@ -71,6 +71,7 @@ app.post('/api/file/uploadmultiple', upload.array('filedata'), (req, res, next) 
     const files = req.files
     const user = req.body.user
     const idSesion = req.body.idSesion
+    const path = req.body.path
     console.log("/api/file/uploadmultiple")
     if (!files) {
         const error = new Error('Please choose files')
@@ -86,7 +87,7 @@ app.post('/api/file/uploadmultiple', upload.array('filedata'), (req, res, next) 
         return next()
     }
     try{
-        let folder = urlMemory +  user +"/"
+        let folder = urlMemory +  user +"/"+ path + "/"
         if (!fs.existsSync(folder)) {
             console.log("creando directorio: " + folder)
             fs.mkdirSync(folder, { recursive: true });

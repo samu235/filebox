@@ -33,6 +33,7 @@ export default function OptionBar(props) {
                 titelStyle={styles.blacktext}
                 bodyStyle={styles.blacktext}
                 funtionReload={props.funtionReload}
+                nowRoute={props.nowRoute}
             />
 
 

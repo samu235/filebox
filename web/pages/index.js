@@ -84,7 +84,7 @@ export default function Home() {
         <meta name="description" content="filebox save your file on cloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <OptionBar funtionReload ={getTree} />
+      <OptionBar funtionReload ={getTree} nowRoute={nowRoute[nowRoute.length - 1]}/>
 
       <div>filebox222</div>
       <div>{nowRoute}</div>
