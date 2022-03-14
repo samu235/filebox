@@ -31,12 +31,15 @@ export default function Home() {
   }, [stateUser])
 
   function getTree() {
-    getTreeService(stateUser.user, stateUser.idSesion, nowRoute[nowRoute.length - 1]).then(data => {
-      console.log("respeusta")
-      console.log(nowRoute)
-      console.log(data.tree)
-      setTree(data.tree)
-    })
+    if (stateUser.user && stateUser.user.length > 0) {
+      getTreeService(stateUser.user, stateUser.idSesion, nowRoute[nowRoute.length - 1]).then(data => {
+        console.log("respeusta")
+        console.log(nowRoute)
+        console.log(data.tree)
+        setTree(data.tree)
+      })
+    }
+
   }
 
   function onClickFolder(data) {
@@ -58,7 +61,7 @@ export default function Home() {
       //data
       //var disposition = data
       //console.log(disposition);
-      
+
     })
   }
   function onClickReturn(data) {
@@ -80,7 +83,7 @@ export default function Home() {
         <meta name="description" content="filebox save your file on cloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <OptionBar funtionReload ={getTree} nowRoute={nowRoute[nowRoute.length - 1]}/>
+      <OptionBar funtionReload={getTree} nowRoute={nowRoute[nowRoute.length - 1]} />
 
       <div>filebox222</div>
       <div>{nowRoute}</div>

@@ -5,19 +5,14 @@ export default function ItemRow(props) {
 
     
     let partName=props.description?.split(".")
-    console.log(partName)
     let svgIcon = getSvgIcons("folder")
-    console.log(partName.length)
     if(partName.length>1){
         svgIcon = getSvgIcons(partName[partName.length-1])
-        console.log(partName[partName.length-1])
     }
     if(props.returnIco )
     {
         svgIcon = getSvgIcons("return")
     }
-    
-    
     
     return (
         <>

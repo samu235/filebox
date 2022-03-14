@@ -4,7 +4,8 @@ import { createStore, combineReducers } from 'redux'
 import { userReducer } from '../reducers/userReducer'
 import { languageReducer } from '../reducers/languageReducer'
 import Head from 'next/head'
-import { useEffect } from 'react'
+
+import IsLogin from '../componets/IsLoging'
 
 const reducer = combineReducers({
   user: userReducer,
@@ -45,6 +46,7 @@ function MyApp({ Component, pageProps }) {
 
       </Head>
       <Provider store={store}>
+        <IsLogin component={Component}/>
         <Component {...pageProps} />
       </Provider>
 
