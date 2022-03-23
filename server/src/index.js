@@ -6,6 +6,7 @@ const multer = require('multer');
 const { request, response } = require('express');
 const bodyParser = require('body-parser');
 const { newUser, loginUser, isLogin, isIdSesion } = require("./user")
+const { readTree, newFolder } = require('./files');
 var router = express.Router();
 
 var fs = require('fs');
@@ -17,7 +18,6 @@ const urlMemory = "./../memory/"
 //const { env } = require('process');
 const dotenv = require('dotenv')
 const sharp = require('sharp');
-const { readTree } = require('./files');
 const PORT = 3001;
 
 app.use('/', router);
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 const storage = multer.diskStorage({
     destination: urlFilesTemporal,
     filename: function (req, file, cb) {
-        cb("", Date.now()+"TEMP"+file.originalname)
+        cb("", Date.now() + "TEMP" + file.originalname)
     }
 })
 
@@ -39,32 +39,47 @@ const upload = multer({
     storage: storage
 })
 
-app.use("/api/file/",async function (req, res, next) {
+app.use("/api/file/", async function (req, res, next) {
     console.log('Time:', Date.now());
-   
+
     const idSesion = req.headers['idsesion']
-    const result = await isIdSesion( idSesion);
+    const result = await isIdSesion(idSesion);
 
     if (result != -1) {
-        console.log("loger OK "+idSesion)
+        console.log("loger OK " + idSesion)
         return next()
     }
     else {
         res.status(500).json({ error: "no login" })
-        console.log("Error no login -- "+idSesion)
+        console.log("Error no login -- " + idSesion)
     }
 
-  })
+})
 
-app.post("/api/file/uploadfile", upload.single('filedata'), (request, response) => {
+app.post("/api/file/uploadfile", (request, response) => {
     const file = request.body.name
-    try {
-                response.json({ "state": "OK" }).send()
-    } catch (error) {
-        response.json().sendStatus(500)
-    }
 
     return;
+})
+
+app.post("/api/file/newfolder", upload.single('filedata'), (request, response) => {
+    const user = request.body.user
+    const path = request.body.path
+    let result = null
+    try {
+        result =newFolder(urlMemory +"/"+user + "/" + path)
+    } catch (error) {
+        console.log("ERROR -- /api/file/newfolder --"+error)
+        response.status(200).json({"error":error})
+    }
+    if(result && result.length >0){
+        response.status(200).json({"result":"ok"})
+    }else if(result === 0){
+        response.status(200).json({"error":"existe"})
+    }else{
+    response.status(200).json({"error":"error"})
+    }
+    
 })
 
 app.post('/api/file/uploadmultiple', upload.array('filedata'), (req, res, next) => {
@@ -78,29 +93,30 @@ app.post('/api/file/uploadmultiple', upload.array('filedata'), (req, res, next) 
         error.httpStatusCode = 400
         return next(error)
     }
-    if( user === undefined || user == null || user <= 0){
+    if (user === undefined || user == null || user <= 0) {
         res.status(200).json({ error: "error user" })
         return next()
     }
-    if( idSesion === undefined || idSesion == null || idSesion <= 0){
+    if (idSesion === undefined || idSesion == null || idSesion <= 0) {
         res.status(200).json({ error: "error idSesion" })
         return next()
     }
-    try{
-        let folder = urlMemory +  user +"/"+ path + "/"
+    try {
+        let folder = urlMemory + user + "/" + path + "/"
         if (!fs.existsSync(folder)) {
             console.log("creando directorio: " + folder)
             fs.mkdirSync(folder, { recursive: true });
-            need_resize=true
+            need_resize = true
         }
-        files.map(data=>{
+        files.map(data => {
             console.log(data.path)
-            console.log(folder+data.originalname)
-            fs.rename(data.path,folder+data.originalname, function (err) {
+            console.log(folder + data.originalname)
+            fs.rename(data.path, folder + data.originalname, function (err) {
                 if (err) throw err
                 console.log('Successfully renamed - AKA moved!')
-              })})
-    }catch(e){
+            })
+        })
+    } catch (e) {
         console.log(e)
     }
 
@@ -158,35 +174,35 @@ app.post('/api/user/islogin/', async (request, response) => {
     }
 
 })
-app.post("/api/file/tree/",(request, response) => {
+app.post("/api/file/tree/", (request, response) => {
     const user = request.body.user;
     const idSesion = request.body.idSesion;
     const path = request.body.path;
 
-   
+
     console.log("/api/file/tree/")
     //console.log(request)
-    console.log(user+" -- "+idSesion+" -- "+path)
+    console.log(user + " -- " + idSesion + " -- " + path)
 
-    let result = readTree(urlMemory+"/"+user+path)
+    let result = readTree(urlMemory + "/" + user + path)
     console.log(result)
     response.status(200).json({ tree: result })
 
 })
 
-app.post("/api/file/download/",(request, response) => {
+app.post("/api/file/download/", (request, response) => {
     const user = request.body.user;
     const idSesion = request.body.idSesion;
     const path = request.body.path;
     console.log("/api/file/download/")
-    console.log(user+" -- "+idSesion+" -- "+path)
-    response.download(urlMemory+"/"+user+path)
+    console.log(user + " -- " + idSesion + " -- " + path)
+    response.download(urlMemory + "/" + user + path)
 })
 
 
 app.listen(PORT);
 console.log(`el servidor esta run en el puerto ${PORT}`);
 
-readTree(urlMemory+"/samu/")
+//readTree(urlMemory+"/samu/")
 
 

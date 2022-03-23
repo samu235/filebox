@@ -8,6 +8,7 @@ import getTreeService from '../services/files/getTreeService'
 import { loginUser } from '../reducers/userReducer'
 import ItemRow from '../componets/ItemRow'
 import dowloadFileService from '../services/files/dowloadFileService'
+import ContextMenu from '../componets/ContextMenu'
 
 export default function Home() {
   const stateLanguage = useSelector(state => state.languege)
@@ -41,6 +42,7 @@ export default function Home() {
     }
 
   }
+  
 
   function onClickFolder(data) {
     console.log("folder")
@@ -83,6 +85,7 @@ export default function Home() {
         <meta name="description" content="filebox save your file on cloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <ContextMenu/>
       <OptionBar funtionReload={getTree} nowRoute={nowRoute[nowRoute.length - 1]} />
 
       <div>filebox222</div>
