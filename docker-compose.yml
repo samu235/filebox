@@ -30,7 +30,12 @@ services:
       - 3001
     networks:
       - default
-
+    environment:
+      - TEMPORAL_FILES=/home/node/app/temporalfiles/
+      - MEMORY_FILES=/home/node/app/memory/
+      - HOST_DDBB=bbdd
+    volumes:
+      - ${FILEBOX_DIR}/filebox/memory/:/home/node/app/memory/
 
   web:
     depends_on:
@@ -44,6 +49,10 @@ services:
       - 3000
     networks:
       - default
+    environment:
+      - NEXT_PUBLIC_API_SERVER_URL=${SERVER_URL:-127.0.0.1}
+      - NEXT_PUBLIC_API_SERVER_PORT=3001
+    
   
 
 

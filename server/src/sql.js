@@ -1,14 +1,14 @@
 var mysql = require('mysql');
 
 const pool = mysql.createPool({
-    host     : '127.0.0.1',
+    host     : process.env.HOST_DDBB,
     port     : '3306',
     user     : 'root',
     password : 'secret',
     database : 'filebox'
 });
-
-
+console.log("port ddbb:")
+console.log(process.env.HOST_DDBB)
 
    
    // Recibe una declaración sql y los valores requeridos

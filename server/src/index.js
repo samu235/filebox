@@ -8,16 +8,32 @@ const bodyParser = require('body-parser');
 const { newUser, loginUser, isLogin, isIdSesion } = require("./user")
 const { readTree, newFolder } = require('./files');
 var router = express.Router();
+const dotenv = require('dotenv')
+const sharp = require('sharp');
+
+
+
+const resultdotenv = dotenv.config()
+
+/*
+if (resultdotenv.error) {
+    throw resultdotenv.error
+}
+*/
+
 
 var fs = require('fs');
-const urlFilesTemporal = "./temporalfiles/"//process.env.NEXT_PUBLIC_FOLDER_SAVE_FACTURAS
-const urlMemory = "./../memory/"
+const urlFilesTemporal = process.env.TEMPORAL_FILES//"./temporalfiles/"//process.env.NEXT_PUBLIC_FOLDER_SAVE_FACTURAS
+const urlMemory = process.env.MEMORY_FILES//"./../memory/"
+
+console.log("la url es ")
+console.log(urlFilesTemporal)
+console.log(urlMemory)
 
 //newUser("celia","celiapass","celia@",0)
 
 //const { env } = require('process');
-const dotenv = require('dotenv')
-const sharp = require('sharp');
+
 const PORT = 3001;
 
 app.use('/', router);
