@@ -2,9 +2,8 @@ CREATE DATABASE  IF NOT EXISTS `filebox` ;
 USE `filebox`;
 
 
-DROP TABLE IF EXISTS `user`;
 
-CREATE TABLE `user` (
+CREATE TABLE IF NOT EXISTS `user` (
   `id` varchar(45) NOT NULL,
   `pass` varchar(124) DEFAULT NULL,
   `typeuser` int(11) DEFAULT NULL,
