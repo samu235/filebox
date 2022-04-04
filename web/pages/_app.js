@@ -45,10 +45,13 @@ function MyApp({ Component, pageProps }) {
 
 
       </Head>
-      <Provider store={store}>
+      <div id="idAllApp">
+        <Provider store={store}>
         <IsLogin component={Component}/>
         <Component {...pageProps} />
       </Provider>
+      </div>
+      
 
     </>
 

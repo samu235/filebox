@@ -16,15 +16,26 @@ export default function ContextMenu(props) {
 
     useEffect(() => {
         document.addEventListener("contextmenu", handleContextMenu);
+        var body = document.getElementById('idAllApp');
+        var except = document.getElementById('idcontextmenu');
+
+
+        body.addEventListener("click", function () {
+            setShow(false);
+        }, false);
+        except.addEventListener("click", function (ev) {
+            ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+        }, false);
         return () => {
             document.removeEventListener("contextmenu", handleContextMenu);
         };
-    });
+    }, []);
 
     return (
 
-        <>
+        <><div id="idcontextmenu">
             {show ? (
+
                 <ul
                     className={styles.contextmenu}
                     style={{
@@ -40,9 +51,12 @@ export default function ContextMenu(props) {
                     <li>Refresh</li>
                     <li>Exit</li>
                 </ul>
+
+
             ) : (
                 <> </>
             )}
+        </div>
         </>
     );
 }
