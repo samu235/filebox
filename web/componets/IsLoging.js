@@ -61,12 +61,16 @@ export default function IsLogin(props) {
     }, [])
 
     useEffect(() => {
+        isLoginNow()
+      }, [props.component])
+      
+    useEffect(() => {
         console.log("detectamos cambio de componente============")
         if (login < 0 && (props.component != Login && props.component != Registro)) {
             console.log("sin Loguear ========")
             router.push("/user/login")
         }
-    }, [props.component, login])
+    }, [ login])
 
     return (<>
     {(login==0) ? <div>cargando</div>:""}</>)
