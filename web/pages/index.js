@@ -18,6 +18,9 @@ export default function Home() {
   console.log(stateLanguage)
   const [mytree, setTree] = useState([])
   const [nowRoute, setNowRoute] = useState(["/"])
+  const [itemContexMenu, setItemContexMenu] = useState([])
+  const [itemSelect, setItemSelect] = useState([])
+  const [showContextMenu, setShowContextMenu] = useState(false);
   useEffect(() => {
     console.log("Home")
     let idSesion = localStorage.getItem("idsesion");
@@ -42,7 +45,7 @@ export default function Home() {
     }
 
   }
-  
+
 
   function onClickFolder(data) {
     console.log("folder")
@@ -57,14 +60,12 @@ export default function Home() {
   function onClickFile(data) {
     console.log("item")
     console.log(data)
+    /*
     dowloadFileService(stateUser.user, stateUser.idSesion, data).then(data => {
       console.log("respeusta")
       console.log(data)
-      //data
-      //var disposition = data
-      //console.log(disposition);
-
     })
+    */
   }
   function onClickReturn(data) {
     if (nowRoute.length > 1) {
@@ -77,28 +78,34 @@ export default function Home() {
     }
 
   }
+  function myFuntionOnClickCapture(item) {
+    //let element = itemContexMenu;
+    console.log(item)
+    setItemContexMenu([item])
+  }
+  function myDoubleClick (item){
+    
+  }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={() => setShowContextMenu(false)}>
       <Head>
         <title>filebox</title>
         <meta name="description" content="filebox save your file on cloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ContextMenu/>
+      <ContextMenu items={itemContexMenu} show={showContextMenu} setShow={setShowContextMenu} />
       <OptionBar funtionReload={getTree} nowRoute={nowRoute[nowRoute.length - 1]} />
-
-      <div>filebox222</div>
-      <div>{nowRoute}</div>
-      <div>{stateUser.user}</div>
-      <div>{stateUser.idSesion}</div>
 
       {(nowRoute.length > 1) ? <ItemRow description={"anterior"} myonClick={onClickReturn} returnIco="true"></ItemRow> : ""}
 
       {mytree?.map(data => {
         const myFuntionOnClick = (data.indexOf(".") > -1) ? () => onClickFile(nowRoute[nowRoute.length - 1] + "/" + data) : () => onClickFolder(nowRoute[nowRoute.length - 1] + "/" + data)
         return (
-          <ItemRow description={data} key={data} myonClick={myFuntionOnClick}></ItemRow>
+          <div key={data} onDoubleClick={() => myDoubleClick(nowRoute[nowRoute.length - 1] + "/" + data)}>
+            <ItemRow description={data} key={data} myonClick={myFuntionOnClick} myonContextMenu={() => myFuntionOnClickCapture(nowRoute[nowRoute.length - 1] + "/" + data)}></ItemRow>
+          </div>
+
         )
       })}
     </div>

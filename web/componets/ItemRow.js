@@ -16,7 +16,7 @@ export default function ItemRow(props) {
     
     return (
         <>
-            <div className={"card "} onClick={props.myonClick} >
+            <div className={"card "} onClick={props.myonClick}  onContextMenu={props.myonContextMenu} >
 
                 <div className={"card-body " + styles.container} >
                     <div className={styles.left}>
