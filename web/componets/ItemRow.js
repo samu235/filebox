@@ -6,6 +6,7 @@ export default function ItemRow(props) {
     
     let partName=props.description?.split(".")
     let svgIcon = getSvgIcons("folder")
+    let selectStyle = (props?.isSelect)? styles.itemSelect : ""
     if(partName.length>1){
         svgIcon = getSvgIcons(partName[partName.length-1])
     }
@@ -16,7 +17,7 @@ export default function ItemRow(props) {
     
     return (
         <>
-            <div className={"card "} onClick={props.myonClick}  onContextMenu={props.myonContextMenu} >
+            <div className={"card "+selectStyle} onClick={props.myonClick}  onContextMenu={props.myonContextMenu} >
 
                 <div className={"card-body " + styles.container} >
                     <div className={styles.left}>

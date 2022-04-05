@@ -1,35 +1,39 @@
-.botom{
+.botom {
     background-color: orange;
     border-radius: 5px 20px 5px;
     border-color: orange;
-    color:white;
+    color: white;
     margin: 0.1rem
 }
 
 .header {
-    
+
     width: 100%;
     background-color: #333;
     font-size: 20px;
     color: #ffffff;
     padding: 15px 20px;
 }
+
 .blacktext {
     color: #000000;
 }
-.right{
+
+.right {
     float: right;
 }
-.left{
+
+.left {
     float: left;
     margin-left: 0.4rem;
 }
+
 .container {
     display: flex;
-  }
+}
 
 
-  .contextmenu {
+.contextmenu {
     font-size: 14px;
     background-color: rgb(240, 0, 0);
     border-radius: 2px;
@@ -37,11 +41,15 @@
     width: 150px;
     height: auto;
     margin: 0;
-  /* use absolute positioning  */
+    /* use absolute positioning  */
     position: absolute;
     list-style: none;
     box-shadow: 0 0 20px 0 #ccc;
     opacity: 1;
     transition: opacity 0.5s linear;
-    z-index:1000
-  }
+    z-index: 1000
+}
+
+.itemSelect {
+    background-color: rgba(255, 166, 0, 0.363);
+}

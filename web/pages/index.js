@@ -41,6 +41,7 @@ export default function Home() {
         console.log(nowRoute)
         console.log(data.tree)
         setTree(data.tree)
+        setItemSelect([])
       })
     }
 
@@ -79,12 +80,25 @@ export default function Home() {
 
   }
   function myFuntionOnClickCapture(item) {
-    //let element = itemContexMenu;
+    let isSelect = itemSelect.find(elem => item === elem)
+
     console.log(item)
-    setItemContexMenu([item])
-  }
-  function myDoubleClick (item){
+    if(isSelect && itemSelect.length>0){
+      setItemContexMenu(itemSelect)
+    }else{
+      setItemContexMenu([item])
+     
+    }
     
+  }
+  function myDoubleClick(item) {
+    let result = itemSelect.find(elem => item === elem)
+    console.log(itemSelect)
+    if (result) {
+      setItemSelect(itemSelect.filter(elem => item !== elem))
+    } else {
+      setItemSelect([...itemSelect, item])
+    }
   }
 
   return (
@@ -100,10 +114,18 @@ export default function Home() {
       {(nowRoute.length > 1) ? <ItemRow description={"anterior"} myonClick={onClickReturn} returnIco="true"></ItemRow> : ""}
 
       {mytree?.map(data => {
-        const myFuntionOnClick = (data.indexOf(".") > -1) ? () => onClickFile(nowRoute[nowRoute.length - 1] + "/" + data) : () => onClickFolder(nowRoute[nowRoute.length - 1] + "/" + data)
+        let routerItem = nowRoute[nowRoute.length - 1] + "/" + data
+        let isSelect = itemSelect.find(elem => routerItem === elem)
+        const myFuntionOnClick = (data.indexOf(".") > -1) ? () => onClickFile(routerItem) : () => onClickFolder(routerItem)
         return (
-          <div key={data} onDoubleClick={() => myDoubleClick(nowRoute[nowRoute.length - 1] + "/" + data)}>
-            <ItemRow description={data} key={data} myonClick={myFuntionOnClick} myonContextMenu={() => myFuntionOnClickCapture(nowRoute[nowRoute.length - 1] + "/" + data)}></ItemRow>
+          <div key={data} onDoubleClick={() => myDoubleClick(routerItem)}>
+            <ItemRow description={data}
+              key={data}
+              myonClick={myFuntionOnClick}
+              myonContextMenu={() => myFuntionOnClickCapture(routerItem)}
+              isSelect = {isSelect}
+            />
+
           </div>
 
         )
