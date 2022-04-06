@@ -47,7 +47,7 @@ export default function Login() {
                 else {
                     if (Number(myuser.typeuser) >0) {
                         localStorage.setItem("idsesion", myuser.idSesion)
-                        localStorage.setItem("user", myuser.id)
+                        localStorage.setItem("user", myuser.user)
                         dispatch(loginUser(myuser.id,myuser.idSesion))
                         setError("")
                         router.push("/")

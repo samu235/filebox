@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 
 async function  newUser(user,pass,mail,typeUser){
 
-    const querry="INSERT INTO `filebox`.`user` (`id`, `pass`, `typeUser`, `mail`) VALUES (?, ?, ?, ?);"
+    const querry="INSERT INTO `filebox`.`user` (`user`, `pass`, `typeUser`, `mail`) VALUES (?, ?, ?, ?);"
     const hastPass = await newEncript(pass)
     //const resultHast = await compare(pass,hastPass)
 
@@ -27,7 +27,7 @@ async function  newUser(user,pass,mail,typeUser){
 
 async function  loginUser(user,pass){
 
-    const querry="SELECT * FROM filebox.user where id = ?;"
+    const querry="SELECT * FROM filebox.user where user = ?;"
     const querry_update="UPDATE `filebox`.`user` SET `idSesion` = ? WHERE (`id` = ?);"
     let uuid = uuidv4()
     //const hastPass = await newEncript(pass)
@@ -43,7 +43,7 @@ async function  loginUser(user,pass){
         
         if(await compare(pass,result[0].pass)){
             console.log("existe user")
-            let result2 = await sql.query(querry_update, [uuid,user])
+            let result2 = await sql.query(querry_update, [uuid,result[0].id])
             console.log(result2)
             if(result2.affectedRows==1){
                 return {...result[0],
@@ -70,14 +70,14 @@ async function  loginUser(user,pass){
 
 async function  isLogin(user,idSesion){
 
-    const querry="SELECT id,idSesion FROM filebox.user where id=? and idSesion=?;"
+    const querry="SELECT user,idSesion FROM filebox.user where user=? and idSesion=?;"
     const querry_update = "UPDATE `filebox`.`user` SET `lastSesion` = '2022-02-06 13:52:27' WHERE (`id` = ?);"
 
 
     try {
         result = await sql.query(querry, [user,idSesion])
         console.log(result)
-        if(result.length > 0 && result[0]?.id === user)
+        if(result.length > 0 && result[0]?.user === user)
         {
            return result; 
         }else{
@@ -93,7 +93,7 @@ async function  isLogin(user,idSesion){
 
 async function  isIdSesion(idSesion){
 
-    const querry="SELECT id,idSesion FROM filebox.user where idSesion=?;"
+    const querry="SELECT user,idSesion FROM filebox.user where idSesion=?;"
     const querry_update = "UPDATE `filebox`.`user` SET `lastSesion` = '2022-02-06 13:52:27' WHERE (`id` = ?);"
 
 

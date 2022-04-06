@@ -62,5 +62,5 @@ async function createDB() {
 
 //module.exports =  query;
 
-createDB()
+//createDB()
 exports.query = query;
