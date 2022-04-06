@@ -22,7 +22,7 @@ export default async function islogin(user,idSesion) {
     //console.log("islogin2s")
     let data = await response.json()
     //console.log(data)
-    if( data[0]?.idSesion == idSesion && data[0]?.id == user){
+    if( data[0]?.idSesion == idSesion && data[0]?.user == user){
         return 1
     }
     else{
