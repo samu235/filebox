@@ -6,7 +6,7 @@ const multer = require('multer');
 const { request, response } = require('express');
 const bodyParser = require('body-parser');
 const { newUser, loginUser, isLogin, isIdSesion } = require("./user")
-const { readTree, newFolder } = require('./files');
+const { readTree, newFolder, deleteItems } = require('./files');
 var router = express.Router();
 const dotenv = require('dotenv')
 const sharp = require('sharp');
@@ -83,19 +83,19 @@ app.post("/api/file/newfolder", upload.single('filedata'), (request, response) =
     const path = request.body.path
     let result = null
     try {
-        result =newFolder(urlMemory +"/"+user + "/" + path)
+        result = newFolder(urlMemory + "/" + user + "/" + path)
     } catch (error) {
-        console.log("ERROR -- /api/file/newfolder --"+error)
-        response.status(200).json({"error":error})
+        console.log("ERROR -- /api/file/newfolder --" + error)
+        response.status(200).json({ "error": error })
     }
-    if(result && result.length >0){
-        response.status(200).json({"result":"ok"})
-    }else if(result === 0){
-        response.status(200).json({"error":"existe"})
-    }else{
-    response.status(200).json({"error":"error"})
+    if (result && result.length > 0) {
+        response.status(200).json({ "result": "ok" })
+    } else if (result === 0) {
+        response.status(200).json({ "error": "existe" })
+    } else {
+        response.status(200).json({ "error": "error" })
     }
-    
+
 })
 
 app.post('/api/file/uploadmultiple', upload.array('filedata'), (req, res, next) => {
@@ -213,6 +213,17 @@ app.post("/api/file/download/", (request, response) => {
     console.log("/api/file/download/")
     console.log(user + " -- " + idSesion + " -- " + path)
     response.download(urlMemory + "/" + user + path)
+})
+
+app.delete("/api/file/deleteitems/", (request, response) => {
+    const user = request.body.user;
+    const idSesion = request.body.idSesion;
+    const delteFiles = request.body.delteFiles;
+    console.log("/api/file/delete/")
+    let ret = deleteItems(urlMemory + "/" + user, delteFiles)
+    response.status(200).json(ret)
+
+
 })
 
 

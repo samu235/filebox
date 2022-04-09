@@ -4,6 +4,27 @@ const { v4: uuidv4 } = require('uuid');
 
 
 
+async function  newPass(user,pass,oldPass){
+
+    const querry= "SELECT * FROM filebox.user where user = ? ;"
+    const hastPass = await newEncript(pass)
+    //const resultHast = await compare(pass,hastPass)
+
+    try {
+        result = await sql.query(querry, [user])
+        console.log(result)
+        if(result?.affectedRows == 1)
+        {
+           return result; 
+        }
+        
+    } catch (error) {
+        console.log("ERROR -- function newPass -- "+error)
+        return -1
+    }
+    return -1
+}
+
 async function  newUser(user,pass,mail,typeUser){
 
     const querry="INSERT INTO `filebox`.`user` (`user`, `pass`, `typeUser`, `mail`) VALUES (?, ?, ?, ?);"

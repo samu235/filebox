@@ -22,6 +22,10 @@ export default function ModalUser(props) {
 
     }
 
+    function changePass (){
+        
+    }
+
 
     return (
         <>
@@ -47,6 +51,7 @@ export default function ModalUser(props) {
                                 <div>{stateUser.idSesion}</div>
 
                             </div>
+                            <button onClick={closeSession}> cambiar contraseña</button>
                             <button onClick={closeSession}> cerrar sesion</button>
 
 

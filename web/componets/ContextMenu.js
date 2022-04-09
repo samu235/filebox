@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import dowloadFileService from "../services/files/dowloadFileService";
 import styles from '../styles/General.module.css'
+import ModalDeleteItems from "./ModalDeleteItems";
 export default function ContextMenu(props) {
 
     const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
@@ -37,6 +38,7 @@ export default function ContextMenu(props) {
     }
     function deleteItem(ev) {
         ev.stopPropagation()
+        $("#DeleteItem").modal('show')
         console.log("contexMEnuDelete")
         if (props?.items.length > 0) {
             props?.items.map((item) => {
@@ -44,9 +46,13 @@ export default function ContextMenu(props) {
             })
         }
     }
+    
     return (
 
-        <><div id="idcontextmenu">
+        <>
+        
+        <ModalDeleteItems filesSelect={props?.items}></ModalDeleteItems>
+        <div id="idcontextmenu">
             {props?.show ? (
 
                 <ul

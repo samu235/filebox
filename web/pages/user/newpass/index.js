@@ -3,23 +3,25 @@ import { useRouter } from 'next/router';
 import newuser from "../../../services/user/newuser";
 
 import styles from "/styles/Registro.module.css"
+import { useSelector } from "react-redux";
 
 
 
 
 
-export default function Registro() {
+export default function NewPass() {
 
     const router = useRouter();
+    const stateUser = useSelector(state => state.user)
 
     const mysend = function (event) {
         event.preventDefault()
-        console.log("enviar formulaio  " + event.currentTarget.username.value)
-        const user = event.currentTarget.username.value
+        
+        const oldPass = event.currentTarget.oldpassword.value
         const pass = event.currentTarget.password.value
-        const email = event.currentTarget.email.value
+        
 
-        const result = newuser(user, pass, email).then((data) => {
+        const result = NewPass(stateUser.user, pass,oldPass).then((data) => {
 
             console.log("datos")
             console.log(data)
@@ -46,17 +48,14 @@ export default function Registro() {
         let enableButton = true
         let pass1 = $("#password").val()
         let pass2 = $("#password2").val()
-        let mail = $("#email").val()
-        const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        let oldPass = $("#oldpassword").val()
+        
         if (pass1 != pass2 || pass1.length <= 0) {
             enableButton = false;
         }
-        if (mail.length <= 0 || !(emailRegex.test(mail))) {
+        if (oldPass.length <= 0 ) {
             enableButton = false;
         }
-
-        console.log(enableButton)
-        console.log(pass1.length)
         $("#buttonSend").prop("disabled", !enableButton);
     }
 
@@ -69,32 +68,25 @@ export default function Registro() {
 
             <form onSubmit={mysend} method="POST">
                 <div className={"card " + styles.cardRegistro}>
-                    <h1 className={styles.carttitel}>Registro</h1>
-                    <div>
-                        <label htmlFor="username">User</label>
-                        <input type='text'
-                            placeholder='username'
-                            id='username'
-                            className="form-control"
-                        />
-                    </div>
+                    <h1 className={styles.carttitel}>New Pass</h1>
+                    
                     <br />
                     <div>
-                        <label htmlFor="email">email</label>
+                        <label htmlFor="password"> old password</label>
                         <input
-                            type='email'
-                            placeholder='email'
-                            id='email'
+                            type='password'
+                            placeholder='old password'
+                            id='oldpassword'
                             className="form-control"
                             onChange={myChange}
                         />
                     </div>
                     <br />
                     <div>
-                        <label htmlFor="password">password</label>
+                        <label htmlFor="password"> new password</label>
                         <input
                             type='password'
-                            placeholder='password'
+                            placeholder='new password'
                             id='password'
                             className="form-control"
                             onChange={myChange}
@@ -102,10 +94,10 @@ export default function Registro() {
                     </div>
                     <br />
                     <div>
-                        <label htmlFor="password2"> repeat password</label>
+                        <label htmlFor="password2">repeat new password</label>
                         <input
                             type='password'
-                            placeholder='password'
+                            placeholder='repeat new password'
                             id='password2'
                             className="form-control"
                             onChange={myChange}
