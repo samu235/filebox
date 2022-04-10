@@ -4,7 +4,7 @@ export default async function getTreeService(user, idSesion, path) {
     let response = {}
 
     try {
-        console.log(url_getTreeService)
+        //console.log(url_getTreeService)
         response = await fetch(url_getTreeService, {
             method: 'POST',
             mode: 'cors',

@@ -5,10 +5,12 @@ import NavBar from '../componets/NavBar'
 import OptionBar from '../componets/OptionBar'
 import { useEffect, useState } from 'react'
 import getTreeService from '../services/files/getTreeService'
-import { loginUser } from '../reducers/userReducer'
+import { loginUser, setIsDeleteFiles } from '../reducers/userReducer'
 import ItemRow from '../componets/ItemRow'
 import dowloadFileService from '../services/files/dowloadFileService'
 import ContextMenu from '../componets/ContextMenu'
+import getIsFilesDeletesService from '../services/files/getIsFilesDeletesService'
+import getTreeTrashService from '../services/files/getTreeTrashService'
 
 export default function Home() {
   const stateLanguage = useSelector(state => state.languege)
@@ -21,6 +23,8 @@ export default function Home() {
   const [itemContexMenu, setItemContexMenu] = useState([])
   const [itemSelect, setItemSelect] = useState([])
   const [showContextMenu, setShowContextMenu] = useState(false);
+  const [needRealoadTree, setNeedRealoadTree] = useState(false);
+  const [onTrash, setOnTrash] = useState(false);
   useEffect(() => {
     console.log("Home")
     let idSesion = localStorage.getItem("idsesion");
@@ -29,22 +33,49 @@ export default function Home() {
     dispatch(loginUser(user, idSesion))
   }, [])
   useEffect(() => {
-
+    console.log("se ejecuta la funcionXXXXXXXXXXXXXXXXXC")
+    setNeedRealoadTree(false)
     getTree()
 
-  }, [stateUser])
+  }, [stateUser.user,stateUser.viewTrash])
 
+  useEffect(() => {
+    console.log("reload")
+    setNeedRealoadTree(false)
+    getTree()
+
+  }, [needRealoadTree])
   function getTree() {
     if (stateUser.user && stateUser.user.length > 0) {
-      getTreeService(stateUser.user, stateUser.idSesion, nowRoute[nowRoute.length - 1]).then(data => {
-        console.log("respeusta")
-        console.log(nowRoute)
-        console.log(data.tree)
-        setTree(data.tree)
-        setItemSelect([])
-      })
+      
+      let mtstate = stateUser.viewTrash
+      let result
+      console.log("el estado es:",mtstate)
+      if (mtstate) {
+        console.log("get arbol basura ",mtstate)
+        getTreeTrashService(stateUser.user, stateUser.idSesion).then(data => {
+          setTree(data.tree)
+          setItemSelect([])
+        })
+      } else {
+        console.log("get arbol normal")
+        getTreeService(stateUser.user, stateUser.idSesion, nowRoute[nowRoute.length - 1]).then(data => {
+          setTree(data.tree)
+          setItemSelect([])
+        })
+
+
+        getTrash()
+      }
     }
 
+  }
+  function getTrash() {
+    if (stateUser.user && stateUser.user.length > 0) {
+      getIsFilesDeletesService(stateUser.user, stateUser.idSesion).then(data => {
+        dispatch(setIsDeleteFiles(data.isFileDeletes))
+      })
+    }
   }
 
 
@@ -83,13 +114,13 @@ export default function Home() {
     let isSelect = itemSelect.find(elem => item === elem)
 
     console.log(item)
-    if(isSelect && itemSelect.length>0){
+    if (isSelect && itemSelect.length > 0) {
       setItemContexMenu(itemSelect)
-    }else{
+    } else {
       setItemContexMenu([item])
-     
+
     }
-    
+
   }
   function myDoubleClick(item) {
     let result = itemSelect.find(elem => item === elem)
@@ -108,7 +139,7 @@ export default function Home() {
         <meta name="description" content="filebox save your file on cloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ContextMenu items={itemContexMenu} show={showContextMenu} setShow={setShowContextMenu} />
+      <ContextMenu items={itemContexMenu} setNeedRealoadTree={setNeedRealoadTree} show={showContextMenu} setShow={setShowContextMenu} />
       <OptionBar funtionReload={getTree} nowRoute={nowRoute[nowRoute.length - 1]} />
 
       {(nowRoute.length > 1) ? <ItemRow description={"anterior"} myonClick={onClickReturn} returnIco="true"></ItemRow> : ""}
@@ -123,7 +154,7 @@ export default function Home() {
               key={data}
               myonClick={myFuntionOnClick}
               myonContextMenu={() => myFuntionOnClickCapture(routerItem)}
-              isSelect = {isSelect}
+              isSelect={isSelect}
             />
 
           </div>

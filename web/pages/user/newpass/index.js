@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/router';
-import newuser from "../../../services/user/newuser";
 
 import styles from "/styles/Registro.module.css"
 import { useSelector } from "react-redux";

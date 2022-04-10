@@ -5,6 +5,15 @@ export const userReducer =(state = user, action )=>{
             user:action.payload.user,
             idSesion:action.payload.idSesion,
         }
+    }else if(action.type ==='@user/setDeleteFiles'){
+        state = {...state,
+            deleteFile:action.payload.deleteFile,
+        }
+    }
+    else if(action.type ==='@user/setViewTrash'){
+        state = {...state,
+            viewTrash:action.payload.viewTrash,
+        }
     }
     return state
 }
@@ -12,6 +21,8 @@ export const userReducer =(state = user, action )=>{
 const user ={
     user:"",
     idSesion:"",
+    deleteFile:false,
+    viewTrash:false,
     
 }
 
@@ -34,3 +45,22 @@ export const closeSessionUser = ()=>{
         },
     }
 }
+
+export const setIsDeleteFiles = (deleteFile)=>{
+    return{
+        type:"@user/setDeleteFiles",
+        payload: {
+            deleteFile:deleteFile,
+        },
+    }
+}
+export const setViewTrash = (view)=>{
+    console
+    return{
+        type:"@user/setViewTrash",
+        payload: {
+            viewTrash:view,
+        },
+    }
+}
+

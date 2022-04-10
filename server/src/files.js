@@ -1,19 +1,23 @@
 const fs = require('fs');
 var walk = require('walk');
 
-const trashFolder = "tashFolder"
+var trashFolder = "tashFolder"
 
 
 
 function readTree(dir) {
     let result = fs.readdirSync(dir, (err, files) => {
         files.forEach(file => {
-            //console.log(file);
-            //result.push(file)
         });
     });
     return result
 }
+
+function readTreeTrash(user,memoryPath) {
+    
+    return readTree(memoryPath+"/"+user+"_"+trashFolder)
+}
+
 function newFolder(path) {
     console.log("newFolder")
     console.log(path)
@@ -50,4 +54,11 @@ function deleteItems(user, items) {
 
     return { result: "ok" }
 }
-module.exports = { readTree, newFolder, deleteItems }
+function getIsFilesDeletes(user){
+    let deteleDir = user + "_" + trashFolder
+    files = readTree(deteleDir)
+
+    return (files?.length>0) ? true : false
+    
+}
+module.exports = {readTree, newFolder, deleteItems,getIsFilesDeletes,readTreeTrash}

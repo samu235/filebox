@@ -27,6 +27,7 @@ export default function ModalDeleteItems(props) {
                 console.log("se a creado")
                 setError("")
                 setName("")
+                props?.setNeedRealoadTree(true)
                 closeModal()
             }
         })

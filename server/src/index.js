@@ -6,7 +6,7 @@ const multer = require('multer');
 const { request, response } = require('express');
 const bodyParser = require('body-parser');
 const { newUser, loginUser, isLogin, isIdSesion } = require("./user")
-const { readTree, newFolder, deleteItems } = require('./files');
+const { readTree, newFolder, deleteItems, getIsFilesDeletes, readTreeTrash } = require('./files');
 var router = express.Router();
 const dotenv = require('dotenv')
 const sharp = require('sharp');
@@ -205,6 +205,15 @@ app.post("/api/file/tree/", (request, response) => {
     response.status(200).json({ tree: result })
 
 })
+app.post("/api/file/treetrash/", (request, response) => {
+    const user = request.body.user;
+
+
+    //const trashFolder = "tashFolder"
+    let result = readTreeTrash(  user,urlMemory )
+    response.status(200).json({ tree: result })
+
+})
 
 app.post("/api/file/download/", (request, response) => {
     const user = request.body.user;
@@ -225,6 +234,13 @@ app.delete("/api/file/deleteitems/", (request, response) => {
 
 
 })
+app.post("/api/file/isFileDeletes/", (request, response) => {
+    const user = request.body.user;
+    console.log("/api/file/isFileDeletes/")
+    let ret = getIsFilesDeletes(urlMemory + "/" + user)
+    response.status(200).json({ isFileDeletes: ret })
+})
+getIsFilesDeletes
 
 
 app.listen(PORT);

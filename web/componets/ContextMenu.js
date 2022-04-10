@@ -45,13 +45,14 @@ export default function ContextMenu(props) {
                 console.log(item)
             })
         }
+        
     }
     
     return (
 
         <>
         
-        <ModalDeleteItems filesSelect={props?.items}></ModalDeleteItems>
+        <ModalDeleteItems setNeedRealoadTree={props?.setNeedRealoadTree} filesSelect={props?.items}></ModalDeleteItems>
         <div id="idcontextmenu">
             {props?.show ? (
 
