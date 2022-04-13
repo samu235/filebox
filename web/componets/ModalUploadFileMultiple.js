@@ -22,6 +22,7 @@ export default function ModalUploadFile(props) {
         uploadMultipleService(fromdata,stateUser.idSesion).then(data => {
             console.log("enviado -- ")
             setmysendok("Enviado")
+            closeModal()
             props.funtionReload()
 
         }).catch((e) => {
@@ -34,7 +35,9 @@ export default function ModalUploadFile(props) {
         setmysendok("")
         setmysenderror("")
     }
-
+    function closeModal() {
+        $("#exampleModalModalCloseBt").click()
+    }
     return (
         <>
 
@@ -66,7 +69,7 @@ export default function ModalUploadFile(props) {
 
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="exampleModalModalCloseBt" className="btn btn-secondary" data-dismiss="modal">Close</button>
                             {/*<button type="button" className="btn btn-primary " data-dismiss="modal">Save changes</button>*/}
                         </div>
                     </div>

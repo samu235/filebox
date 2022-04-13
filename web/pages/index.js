@@ -24,7 +24,6 @@ export default function Home() {
   const [itemSelect, setItemSelect] = useState([])
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [needRealoadTree, setNeedRealoadTree] = useState(false);
-  const [onTrash, setOnTrash] = useState(false);
   useEffect(() => {
     console.log("Home")
     let idSesion = localStorage.getItem("idsesion");
@@ -48,17 +47,16 @@ export default function Home() {
   function getTree() {
     if (stateUser.user && stateUser.user.length > 0) {
       
-      let mtstate = stateUser.viewTrash
-      let result
-      console.log("el estado es:",mtstate)
-      if (mtstate) {
-        console.log("get arbol basura ",mtstate)
+   
+      if (stateUser.viewTrash) {
+        //console.log("get arbol basura ",mtstate)
         getTreeTrashService(stateUser.user, stateUser.idSesion).then(data => {
+          console.log("basura",data.tree)
           setTree(data.tree)
           setItemSelect([])
         })
       } else {
-        console.log("get arbol normal")
+        //console.log("get arbol normal")
         getTreeService(stateUser.user, stateUser.idSesion, nowRoute[nowRoute.length - 1]).then(data => {
           setTree(data.tree)
           setItemSelect([])
@@ -145,7 +143,7 @@ export default function Home() {
       {(nowRoute.length > 1) ? <ItemRow description={"anterior"} myonClick={onClickReturn} returnIco="true"></ItemRow> : ""}
 
       {mytree?.map(data => {
-        let routerItem = nowRoute[nowRoute.length - 1] + "/" + data
+        let routerItem = (stateUser.viewTrash) ? data : nowRoute[nowRoute.length - 1] + "/" + data
         let isSelect = itemSelect.find(elem => routerItem === elem)
         const myFuntionOnClick = (data.indexOf(".") > -1) ? () => onClickFile(routerItem) : () => onClickFolder(routerItem)
         return (

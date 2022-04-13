@@ -3,6 +3,7 @@ import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { setViewTrash } from '../reducers/userReducer'
 import styles from '../styles/General.module.css'
+import ModalDeleteItemsAll from './ModalDeleteItemsAll'
 import ModalNewFolder from './ModalNewFolder'
 import ModalUploadFile from './ModalUploadFileMultiple'
 import ModalUser from './ModalUser'
@@ -60,37 +61,55 @@ export default function OptionBar(props) {
             {(stateUser.deleteFile) ?
                 <button type="button" className={"btn btn-primary mybotom " + styles.botom + " " + styles.right} onClick={() => dispatch(setViewTrash(false))}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-house" viewBox="0 0 16 16">
-                        <path  d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
-                        <path  d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+                        <path d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                        <path d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
                     </svg>
                     Inicio
                 </button>
                 : ""}
-        </>)
-    })
 
-    return (
-
-        <div className={styles.header}>
-            filebox
-            <ModalUser
+            
+            <ModalDeleteItemsAll
                 botonicon={
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person" viewBox="0 0 16 16">
-                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
-                    </svg>
-                }
-                botondescription="User"
+                    < svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-circle" viewBox="0 0 16 16" >
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg >
+                } 
+                botondescription="Clean"
                 botonStyle={styles.botom + " " + styles.right}
                 titelStyle={styles.blacktext}
                 bodyStyle={styles.blacktext}
-
-            />
-            {(!stateUser.viewTrash) ? <ButtonViewInit /> : <ButtonViewTrash/>}
-
-
+                />
+        </>)
+    })
 
 
-        </div >
 
+
+    return (
+        <>
+            <div className={styles.header}>
+                filebox
+                <ModalUser
+                    botonicon={
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                        </svg>
+                    }
+                    botondescription="User"
+                    botonStyle={styles.botom + " " + styles.right}
+                    titelStyle={styles.blacktext}
+                    bodyStyle={styles.blacktext}
+
+                />
+                {(!stateUser.viewTrash) ? <ButtonViewInit /> : <ButtonViewTrash />}
+
+
+
+
+            </div >
+
+        </>
     )
 }

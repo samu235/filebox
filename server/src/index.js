@@ -6,7 +6,7 @@ const multer = require('multer');
 const { request, response } = require('express');
 const bodyParser = require('body-parser');
 const { newUser, loginUser, isLogin, isIdSesion } = require("./user")
-const { readTree, newFolder, deleteItems, getIsFilesDeletes, readTreeTrash } = require('./files');
+const { readTree, newFolder, deleteItems, getIsFilesDeletes, readTreeTrash, deleteItemsTrash, deleteItemsTrashAll } = require('./files');
 var router = express.Router();
 const dotenv = require('dotenv')
 const sharp = require('sharp');
@@ -118,7 +118,7 @@ app.post('/api/file/uploadmultiple', upload.array('filedata'), (req, res, next) 
         return next()
     }
     try {
-        let folder = urlMemory + user + "/" + path + "/"
+        let folder = urlMemory + "/"+ user + "/" + path + "/"
         if (!fs.existsSync(folder)) {
             console.log("creando directorio: " + folder)
             fs.mkdirSync(folder, { recursive: true });
@@ -210,7 +210,7 @@ app.post("/api/file/treetrash/", (request, response) => {
 
 
     //const trashFolder = "tashFolder"
-    let result = readTreeTrash(  user,urlMemory )
+    let result = readTreeTrash(user, urlMemory)
     response.status(200).json({ tree: result })
 
 })
@@ -226,7 +226,6 @@ app.post("/api/file/download/", (request, response) => {
 
 app.delete("/api/file/deleteitems/", (request, response) => {
     const user = request.body.user;
-    const idSesion = request.body.idSesion;
     const delteFiles = request.body.delteFiles;
     console.log("/api/file/delete/")
     let ret = deleteItems(urlMemory + "/" + user, delteFiles)
@@ -240,7 +239,22 @@ app.post("/api/file/isFileDeletes/", (request, response) => {
     let ret = getIsFilesDeletes(urlMemory + "/" + user)
     response.status(200).json({ isFileDeletes: ret })
 })
-getIsFilesDeletes
+app.delete("/api/file/deleteitemstrash/", (request, response) => {
+    const user = request.body.user;
+    const delteFiles = request.body.delteFiles;
+    let ret = deleteItemsTrash(urlMemory + "/" + user, delteFiles)
+    response.status(200).json(ret)
+})
+
+app.delete("/api/file/deleteitemstrashall/", (request, response) => {
+    const user = request.body.user;
+    const delteFiles = request.body.delteFiles;
+    console.log("/api/file/deleteitemstrashall/")
+    let ret = deleteItemsTrashAll(urlMemory + "/" + user)
+    response.status(200).json(ret)
+})
+
+
 
 
 app.listen(PORT);

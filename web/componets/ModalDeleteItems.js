@@ -6,6 +6,7 @@ import uploadMultipleService from '../services/files/uploadMultipleService'
 import { useRouter } from 'next/router';
 import newfolderService from '../services/files/newFolderService';
 import deleteItemesService from '../services/files/deleteItemsService';
+import deleteItemesTrashService from '../services/files/deleteItemstrashService';
 
 
 export default function ModalDeleteItems(props) {
@@ -19,18 +20,34 @@ export default function ModalDeleteItems(props) {
 
 
     function deleteItem() {
-        deleteItemesService(stateUser.user, stateUser.idSesion,props?.filesSelect ).then(data => {
-            console.log(data)
-            if (data?.error) {
-                setError("error")
-            } else if (data?.result === "ok") {
-                console.log("se a creado")
-                setError("")
-                setName("")
-                props?.setNeedRealoadTree(true)
-                closeModal()
-            }
-        })
+        if (stateUser.viewTrash) {
+            deleteItemesTrashService(stateUser.user, stateUser.idSesion, props?.filesSelect).then(data => {
+                console.log(data)
+                if (data?.error) {
+                    setError("error")
+                } else if (data?.result === "ok") {
+                    setError("")
+                    setName("")
+                    props?.setNeedRealoadTree(true)
+                    closeModal()
+                }
+            })
+        } else {
+            deleteItemesService(stateUser.user, stateUser.idSesion, props?.filesSelect).then(data => {
+                console.log(data)
+                if (data?.error) {
+                    setError("error")
+                } else if (data?.result === "ok") {
+                    setError("")
+                    setName("")
+                    props?.setNeedRealoadTree(true)
+                    closeModal()
+                }
+            })
+        }
+
+
+
     }
 
     function closeModal() {
@@ -46,7 +63,7 @@ export default function ModalDeleteItems(props) {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className={"modal-title " + props?.titelStyle} id="DeleteItemLabel">¿Seguro que quiere eliminar los archivos?</h5>
+                            <h5 className={"modal-title " + props?.titelStyle} id="DeleteItemLabel">¿Seguro que quiere eliminar los archivos{(stateUser.viewTrash)?" para siempre":""}?</h5>
                             <button type="button" className="close" onClick={closeModal} aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
