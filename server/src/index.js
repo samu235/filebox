@@ -6,7 +6,7 @@ const multer = require('multer');
 const { request, response } = require('express');
 const bodyParser = require('body-parser');
 const { newUser, loginUser, isLogin, isIdSesion } = require("./user")
-const { readTree, newFolder, deleteItems, getIsFilesDeletes, readTreeTrash, deleteItemsTrash, deleteItemsTrashAll } = require('./files');
+const { readTree, newFolder, deleteItems, getIsFilesDeletes, readTreeTrash, deleteItemsTrash, deleteItemsTrashAll, restore } = require('./files');
 var router = express.Router();
 const dotenv = require('dotenv')
 const sharp = require('sharp');
@@ -251,6 +251,13 @@ app.delete("/api/file/deleteitemstrashall/", (request, response) => {
     const delteFiles = request.body.delteFiles;
     console.log("/api/file/deleteitemstrashall/")
     let ret = deleteItemsTrashAll(urlMemory + "/" + user)
+    response.status(200).json(ret)
+})
+
+app.post("/api/file/restore/", (request, response) => {
+    const user = request.body.user;
+    const restoreFiles = request.body.restoreFiles;
+    let ret = restore(urlMemory + "/" + user, restoreFiles)
     response.status(200).json(ret)
 })
 

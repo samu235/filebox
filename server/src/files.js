@@ -20,28 +20,15 @@ function readTreeTrash(user, path, path_read = "") {
     let result = []
     let dir = path + "/" + user + "_" + trashFolder + "/" + path_read
     try {
-        console.log("readTreeTrash -- ", dir)
-        console.log("path_read -- ", path_read)
         files = fs.readdirSync(dir)
-        console.log(files)
         files.forEach(file => {
-
-
-            console.log("myfile", file)
 
             let stats = fs.statSync(dir + "/" + file)
             if (stats.isDirectory()) {
-                console.log("directorio " + file)
                 result.push(...readTreeTrash(user, path, path_read + file + "/"))
             } else {
-                console.log("file " + file)
                 result.push(path_read + "/" + file)
             }
-
-            console.log("fin ", file)
-
-
-            console.log("readTreeTrash -- FINNNN", file)
         })
     } catch (error) {
         console.log("error moveRecursive".error)
@@ -53,20 +40,15 @@ function readTreeTrash(user, path, path_read = "") {
 }
 
 function newFolder(path) {
-    console.log("newFolder")
-    console.log(path)
     let result = -1;
     if (!fs.existsSync(path)) {
         result = fs.mkdirSync(path, { recursive: true });
-        console.log("newFolder result")
-        console.log(result)
     } else {
         return 0
     }
     return result
 }
 function deleteItems(user, items) {
-    console.log("deleteItems")
     let result = -1;
     try {
         if (!fs.existsSync(user + "_" + trashFolder)) {
@@ -77,7 +59,6 @@ function deleteItems(user, items) {
             let ofdir = user + items[i]
             let last = items[i].lastIndexOf("/")
             let lastFolder = items[i].substring(0, last)
-            console.log(lastFolder)
             fs.mkdirSync(user + "_" + trashFolder + lastFolder, { recursive: true });
             fs.renameSync(ofdir, todir)
         }
@@ -140,6 +121,28 @@ async function removeEmpyFolder(folder) {
 
 }
 
+function restore(user, files) {
+    let myDir = user + "_" + trashFolder
+    let newDir = user
+    try {
+        files.map(file => {
+            let myfile = myDir + "/" + file
+            let NewFile = newDir + "/" + file
+            let last = NewFile.lastIndexOf("/")
+            let lastFolder = NewFile.substring(0, last)
+            if (!fs.existsSync(lastFolder)) {
+                fs.mkdirSync(lastFolder)
+            }
+            
+            fs.renameSync(myfile, NewFile)
+        })
+    } catch (error) {
+        console.log("error -- restore --",error)
+        return { error: error }
+    }
+    return { result: "ok" }
+}
+
 function moveRecursive(oldPath, newPath) {
 
     try {
@@ -163,4 +166,4 @@ function moveRecursive(oldPath, newPath) {
 }
 
 
-module.exports = { readTree, newFolder, deleteItems, getIsFilesDeletes, readTreeTrash, deleteItemsTrash, deleteItemsTrashAll }
+module.exports = { readTree, newFolder, deleteItems, getIsFilesDeletes, readTreeTrash, deleteItemsTrash, deleteItemsTrashAll,restore }

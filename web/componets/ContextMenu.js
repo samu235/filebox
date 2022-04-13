@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import dowloadFileService from "../services/files/dowloadFileService";
+import restoreItemsService from "../services/files/restoreItemsService";
 import styles from '../styles/General.module.css'
 import ModalDeleteItems from "./ModalDeleteItems";
 export default function ContextMenu(props) {
@@ -36,6 +37,21 @@ export default function ContextMenu(props) {
         }
 
     }
+    function restore() {
+        if (props?.items.length > 0) {
+            restoreItemsService(stateUser.user, stateUser.idSesion, props?.items).then(data => {
+                console.log("respeusta")
+                console.log(data)
+                if(data.error){
+
+                }else if(data?.result === "ok"){
+                    props?.setNeedRealoadTree(true)
+                }
+            })
+            
+        }
+
+    }
     function deleteItem(ev) {
         ev.stopPropagation()
         $("#DeleteItem").modal('show')
@@ -47,7 +63,7 @@ export default function ContextMenu(props) {
         }
 
     }
-    
+
     const DefaulView = (() => {
 
         return (
@@ -63,7 +79,7 @@ export default function ContextMenu(props) {
         return (
             <>
                 <li><button onClick={(ev) => deleteItem(ev)}>delete</button></li>
-                <li><button onClick={download}>restore</button></li>
+                <li><button onClick={restore}>restore</button></li>
             </>
         )
     })
@@ -83,9 +99,9 @@ export default function ContextMenu(props) {
                             left: anchorPoint.x
                         }}
                     >
-                        {(stateUser.viewTrash) ? <TrashView/>:<DefaulView/> }
+                        {(stateUser.viewTrash) ? <TrashView /> : <DefaulView />}
                         <hr className="divider" />
-                        
+
                     </ul>
 
 
