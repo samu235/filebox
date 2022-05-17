@@ -11,8 +11,8 @@ export default function ModalUser(props) {
     const stateUser = useSelector(state => state.user)
     const dispatch = useDispatch()
     const router = useRouter();
-    
-    function closeSession (){
+
+    function closeSession() {
         $("#closeButton").click();
         console.log("closeSession")
         dispatch(closeSessionUser())
@@ -22,8 +22,8 @@ export default function ModalUser(props) {
 
     }
 
-    function changePass (){
-        
+    function changePass() {
+
     }
 
 
@@ -40,7 +40,7 @@ export default function ModalUser(props) {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className={"modal-title " + props?.titelStyle} id="userModalLabel">{stateUser.user}</h5>
-                            <button type="button" className="close"id="closeButton" data-dismiss="modal" aria-label="Close">
+                            <button type="button" className="close" id="closeButton" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -51,8 +51,14 @@ export default function ModalUser(props) {
                                 <div>{stateUser.idSesion}</div>
 
                             </div>
-                            <button onClick={closeSession}> cambiar contraseña</button>
-                            <button onClick={closeSession}> cerrar sesion</button>
+                            <div>
+                                <button onClick={changePass}> cambiar contraseña</button>
+                            </div>
+                            <div>
+                                <button onClick={closeSession}> cerrar sesion</button>
+                            </div>
+
+
 
 
                         </div>
