@@ -71,6 +71,7 @@ export default function Home() {
   function getTrash() {
     if (stateUser.user && stateUser.user.length > 0) {
       getIsFilesDeletesService(stateUser.user, stateUser.idSesion).then(data => {
+        console.log("XXXXXXXXXXXXXXXXXX basura",data)
         dispatch(setIsDeleteFiles(data.isFileDeletes))
       })
     }
